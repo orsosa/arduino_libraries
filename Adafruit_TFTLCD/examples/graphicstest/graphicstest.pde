@@ -83,7 +83,8 @@ void setup(void) {
 
   tft.begin(identifier);
 
-  Serial.println(F("Benchmark                Time (microseconds)"));
+  Serial.println(F("Modifid by orlando."));
+  /*Serial.println(F("Benchmark                Time (microseconds)"));
 
   Serial.print(F("Screen fill              "));
   Serial.println(testFillScreen());
@@ -133,6 +134,7 @@ void setup(void) {
   delay(500);
 
   Serial.println(F("Done!"));
+  */
 }
 
 void loop(void) {
