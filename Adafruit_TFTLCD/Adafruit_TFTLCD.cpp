@@ -893,21 +893,22 @@ uint16_t Adafruit_TFTLCD::readID(void) {
   // some sort of timing issue?
   // at least one of the Serial.print s below
   // needs to execute then we read 0x9341
-  //uint16_t foo = readReg(0x04);
-  //Serial.print("Foo ");
-  //Serial.println(foo, HEX);
+  
+  uint16_t foo = readReg(0x04);
+  Serial.print("Foo ");
+  Serial.println(foo, HEX);
 
-  //delay(1000);
+  delay(1000);
 
   if (readReg(0x04) == 0x8000) { // eh close enough
     // setc!
-    /*
+    
       Serial.println("!");
       for (uint8_t i=0; i<254; i++) {
       Serial.print("$"); Serial.print(i, HEX);
       Serial.print(" = 0x"); Serial.println(readReg(i), HEX);
       }
-    */
+    
     writeRegister24(HX8357D_SETC, 0xFF8357);
     delay(300);
     if (readReg(0xD0) == 0x990000) {
@@ -919,7 +920,7 @@ uint16_t Adafruit_TFTLCD::readID(void) {
   if (id == 0x9341) {
     return id;
   }
-
+  Serial.println("going here");
   CS_ACTIVE;
   CD_COMMAND;
   write8(0x00);

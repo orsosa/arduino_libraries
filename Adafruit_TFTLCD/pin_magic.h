@@ -161,8 +161,7 @@
     DDRH &= ~B01111000; DDRB &= ~B10110000; DDRG &= ~B00100000; }
 
  #else // Mega w/Breakout board
-
-  #define write8inline(d)   { PORTA = (d); WR_STROBE; }
+  /*#define write8inline(d)   { PORTA = (d); WR_STROBE; }
   #define read8inline(result) { \
     RD_ACTIVE;                  \
     DELAY7;                     \
@@ -170,7 +169,25 @@
     RD_IDLE; }
   #define setWriteDirInline() DDRA  = 0xff
   #define setReadDirInline()  DDRA  = 0
-
+  */
+  #define write8inline(d)   { PORTE = PORTE&(B11000111) | (d&B00001100)<<2 | (d&B00100000)>>2;\
+                              PORTG = PORTG&(B11011111) | (d&B00010000)<<1;\
+                              PORTH = PORTH&(B10000111) | (d&B11000000)>>3 | (d&B00000011)<<5;\
+                              WR_STROBE; }
+  #define read8inline(result) { \
+    RD_ACTIVE;                  \
+    DELAY7;                     \
+    result = (PORTE&B00110000)>>2 | (PORTE&B00001000)<<2 | \
+             (PORTG&B00100000)>>1 | \
+             (PORTH&B00011000)<<3 | (PORTH&B01100000)>>5; \
+    RD_IDLE; }
+  #define setWriteDirInline() {DDRE |=  B00111000;\
+                              DDRG  |=  B00100000;\
+                              DDRH  |=  B01111000;}
+  #define setReadDirInline() {DDRE  &= ~B00111000;\
+                              DDRG  &= ~B00100000;\
+                              DDRH  &= ~B01111000;} 
+  
  #endif
 
   // All of the functions are inlined on the Arduino Mega.  When using the
